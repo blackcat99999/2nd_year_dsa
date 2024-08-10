@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+//time complexity n^2
+
 void insertion_sort_ascending(int arr[], int n) {
     int i, key, j;
     for (i = 1; i < n; i++) {

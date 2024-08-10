@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+//time complexity is n log(n), however it could be n^2 if pivot is chosen poorly
+
 void swap(int* a, int* b) {
     int temp = *a;
     *a = *b;
