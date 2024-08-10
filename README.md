@@ -2,4 +2,4 @@
 
 dsa problems solved in c language
 
-# College stuff
+
