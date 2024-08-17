@@ -79,8 +79,7 @@ void enqueue(int queue[], int* front, int* rear, int element) {
         return;
     }
 
-    queue[(*rear)++] = element;
-    *rear %= MAX;
+    queue[(*rear)++ % MAX] = element;
     printf("Element %d enqueued!\n", element);
 }
 

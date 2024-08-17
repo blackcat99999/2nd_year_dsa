@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//seems to have unecessary complexity
+//rewrite
+
 typedef struct Node {
     int row;
     int col;
