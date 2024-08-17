@@ -1,35 +1,31 @@
-//circular reversal 
-//no of times we know the permutation will happen
-
 #include <stdio.h>
 
-void generate_permutations842(int arr[], int size, int fact) {
-    
-    int i=0,counter=0;
-    
-     while(1){
-
-        if(counter == fact)
-        break;
-
+void generate_permutations(int arr[], int size, int n) {
+    if (n == 1) {
         for (int i = 0; i < size; i++) {
-        printf("%d ", arr[i]);
+            printf("%d ", arr[i]);
         }
-
         printf("\n");
+        return;
+    }
 
-        int temp = 0;
-        temp = arr[i];
-        arr[i] = arr[(i+1)%size];
-        arr[(i+1)%size] = temp;
+    for (int i = 0; i < n; i++) {
+        generate_permutations(arr, size, n - 1);
 
-        i=(i+1)%size;
-        counter++;
-     };
+        if (i % 2 == 0) {
+            int temp = arr[n - 1];
+            arr[n - 1] = arr[i];
+            arr[i] = temp;
+        } else {
+            int temp = arr[0];
+            arr[0] = arr[n - 1];
+            arr[n - 1] = temp;
+        }
+    }
 }
 
 int main() {
-    int size,fact=1;
+    int size;
     printf("Enter the size of the array: ");
     scanf("%d", &size);
 
@@ -39,10 +35,6 @@ int main() {
         scanf("%d", &arr[i]);
     }
 
-    for(int i = 1; i <= size; i++){
-        fact *= i;
-    }
-
-    generate_permutations842(arr, size, fact);
+    generate_permutations(arr, size, size);
     return 0;
 }
