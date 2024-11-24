@@ -7,116 +7,150 @@ typedef struct Node {
     struct Node* prev;
 } Node;
 
-Node* create_node(int data) {
+typedef struct DoublyLinkedList {
+    Node* head;
+} DoublyLinkedList;
+
+void insert_at_position(DoublyLinkedList* dll, int data, int position) {
+    if (position < 0) {
+        printf("Error: Position cannot be negative\n");
+        return;
+    }
+
     Node* new_node = (Node*)malloc(sizeof(Node));
     new_node->data = data;
     new_node->next = NULL;
     new_node->prev = NULL;
-    return new_node;
-}
 
-void insert_node(Node** head, int data, int position) {
-    Node* new_node = create_node(data);
-    if (*head == NULL) {
-        *head = new_node;
+    if (dll->head == NULL || position == 0) {
+        new_node->next = dll->head;
+        if (dll->head) {
+            dll->head->prev = new_node;
+        }
+        dll->head = new_node;
     } else {
-        Node* temp = *head;
-        int i = 1;
-        while (temp->next != NULL && i < position - 1) {
-            temp = temp->next;
-            i++;
+        Node* current = dll->head;
+        int current_position = 0;
+        while (current_position < position - 1 && current->next) {
+            current = current->next;
+            current_position++;
         }
-        new_node->next = temp->next;
-        new_node->prev = temp;
-        if (temp->next != NULL) {
-            temp->next->prev = new_node;
+        if (current_position != position - 1) {
+            // Append to the end of the list
+            while (current->next) {
+                current = current->next;
+            }
+            current->next = new_node;
+            new_node->prev = current;
+        } else {
+            new_node->next = current->next;
+            new_node->prev = current;
+            if (current->next) {
+                current->next->prev = new_node;
+            }
+            current->next = new_node;
         }
-        temp->next = new_node;
     }
+    printf("Node inserted\n");
 }
 
-void delete_node(Node** head, int position) {
-    if (*head == NULL) {
-        printf("List is empty\n");
+void delete_at_position(DoublyLinkedList* dll, int position) {
+    if (position < 0) {
+        printf("Error: Position cannot be negative\n");
         return;
     }
-    Node* temp = *head;
-    int i = 1;
-    while (temp->next != NULL && i < position - 1) {
-        temp = temp->next;
-        i++;
-    }
-    if (temp->next == NULL) {
-        printf("Position out of range\n");
+
+    if (dll->head == NULL) {
+        printf("Error: List is empty\n");
         return;
     }
-    Node* node_to_delete = temp->next;
-    temp->next = node_to_delete->next;
-    if (node_to_delete->next != NULL) {
-        node_to_delete->next->prev = temp;
+
+    if (position == 0) {
+        Node* temp = dll->head;
+        dll->head = dll->head->next;
+        if (dll->head) {
+            dll->head->prev = NULL;
+        }
+        free(temp);
+    } else {
+        Node* current = dll->head;
+        int current_position = 0;
+        while (current_position < position - 1 && current->next) {
+            current = current->next;
+            current_position++;
+        }
+        if (current_position != position - 1) {
+            printf("Error: Position out of range\n");
+            return;
+        }
+        Node* temp = current->next;
+        current->next = current->next->next;
+        if (current->next) {
+            current->next->prev = current;
+        }
+        free(temp);
     }
-    free(node_to_delete);
+    printf("Node deleted\n");
 }
 
-void traverse(Node* head) {
-    while (head != NULL) {
-        printf("%d->", head->data);
-        head = head->next;
+void traverse(DoublyLinkedList* dll) {
+    Node* current = dll->head;
+    while (current) {
+        printf("%d->", current->data);
+        current = current->next;
     }
-    printf("NULL\n");
+    printf("\n");
 }
 
 int main() {
-    Node* head = NULL;
-    int n;
+    int num_nodes;
     printf("Enter number of nodes: ");
-    scanf("%d", &n);
+    scanf("%d", &num_nodes);
+
+    int elements[num_nodes];
     printf("Enter the elements: ");
-    for (int i = 0; i < n; i++) {
-        int data;
-        scanf("%d", &data);
-        insert_node(&head, data, i + 1);
+    for (int i = 0; i < num_nodes; i++) {
+        scanf("%d", &elements[i]);
     }
 
-    int choice;
+    DoublyLinkedList dll;
+    dll.head = NULL;
+
+    for (int i = 0; i < num_nodes; i++) {
+        insert_at_position(&dll, elements[i], i);
+    }
+
     while (1) {
-        printf("MENU:\n");
+        printf("\nMENU:\n");
         printf("1. Insert the node at a position\n");
         printf("2. Delete a node from specific position\n");
         printf("3. Traversal\n");
         printf("5. Exit\n");
+        int choice;
         printf("Enter choice: ");
         scanf("%d", &choice);
-        switch (choice) {
-            case 1: {
-                int data, position;
-                printf("Enter element: ");
-                scanf("%d", &data);
-                printf("Enter position: ");
-                scanf("%d", &position);
-                insert_node(&head, data, position);
-                printf("Node inserted\n");
-                break;
-            }
-            case 2: {
-                int position;
-                printf("Enter position: ");
-                scanf("%d", &position);
-                delete_node(&head, position);
-                break;
-            }
-            case 3: {
-                printf("The list is: ");
-                traverse(head);
-                break;
-            }
-            case 5: {
-                return 0;
-            }
-            default: {
-                printf("Invalid choice\n");
-            }
+
+        if (choice == 1) {
+            int element;
+            int position;
+            printf("Enter element: ");
+            scanf("%d", &element);
+            printf("Enter position: ");
+            scanf("%d", &position);
+            insert_at_position(&dll, element, position);
+        } else if (choice == 2) {
+            int position;
+            printf("Enter position: ");
+            scanf("%d", &position);
+            delete_at_position(&dll, position);
+        } else if (choice == 3) {
+            traverse(&dll);
+        } else if (choice == 5) {
+            break;
+        } else {
+            printf("Invalid choice\n");
         }
     }
+
     return 0;
 }

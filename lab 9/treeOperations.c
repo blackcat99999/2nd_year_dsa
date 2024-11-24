@@ -77,13 +77,7 @@ int main() {
         scanf("%d", &data);
         root = insertNode(root, data);
     }
-    printf("BST Created:\n");
-    printf("                %d\n", root->data);
-    printf("               /   \\\n");
-    printf("             %d      %d\n", root->left->data, root->right->data);
-    printf("          /  \       \\\n");
-    printf("         %d    %d        %d\n", root->left->left->data, root->left->right->data, root->right->right->data);
-
+    
     while (1) {
         printf("\nMAIN MENU\n");
         printf("1. Insert\n");
@@ -96,48 +90,57 @@ int main() {
         int option;
         scanf("%d", &option);
         switch (option) {
-            case 1:
+            case 1: {
                 printf("Enter element to insert in BST: ");
                 int data;
                 scanf("%d", &data);
                 root = insertNode(root, data);
-                printf("BST after insertion:\n");
-                printf("                %d\n", root->data);
-                printf("               /   \\\n");
-                printf("             %d      %d\n", root->left->data, root->right->data);
-                printf("          /  \       \\\n");
-                printf("         %d    %d        %d\n", root->left->left->data, root->left->right->data, root->right->right->data);
                 break;
-            case 2:
+            }
+            case 2: {
                 Node* largest = findLargest(root);
-                printf("Largest element in BST=%d\n", largest->data);
+                if (largest) {
+                    printf("Largest element in BST = %d\n", largest->data);
+                } else {
+                    printf("BST is empty.\n");
+                }
                 break;
-            case 3:
+            }
+            case 3: {
                 Node* smallest = findSmallest(root);
-                printf("Smallest element in BST=%d\n", smallest->data);
+                if (smallest) {
+                    printf("Smallest element in BST = %d\n", smallest->data);
+                } else {
+                    printf("BST is empty.\n");
+                }
                 break;
-            case 4:
+            }
+            case 4: {
                 printf("Enter node to find height: ");
                 int node;
                 scanf("%d", &node);
                 Node* temp = root;
                 while (temp != NULL) {
-                    if (temp->data == node) {                    int height = calculateHeight(temp);
-                    printf("Height of %d = %d\n", node, height);
-                    break;
-                } else if (temp->data < node) {
-                    temp = temp->right;
-                } else {
-                    temp = temp->left;
+                    if (temp->data == node) {
+                        int height = calculateHeight(temp);
+                        printf("Height of %d = %d\n", node, height);
+                        break;
+                    } else if (temp->data < node) {
+                        temp = temp->right;
+                    } else {
+                        temp = temp->left;
+                    }
                 }
                 if (temp == NULL) {
                     printf("%d not found in BST\n", node);
                 }
                 break;
-            case 5:
+            }
+            case 5: {
                 int leafCount = countLeafNodes(root);
                 printf("Number of leaf nodes in BST = %d\n", leafCount);
                 break;
+            }
             case 6:
                 return 0;
             default:

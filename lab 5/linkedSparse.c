@@ -32,12 +32,12 @@ void insert_node(Header headers[], int row, int col, int data, int rows, int col
     new_node->next = headers[row].head;
     headers[row].head = new_node;
 
-    new_node = (Node*)malloc(sizeof(Node));
+    /*new_node = (Node*)malloc(sizeof(Node));
     new_node->row = row;
     new_node->col = col;
     new_node->data = data;
     new_node->next = headers[rows + col].head;
-    headers[rows + col].head = new_node;
+    headers[rows + col].head = new_node;*/
 }
 
 void display_sparse_matrix(Header headers[], int rows, int cols, int num_elements) {
@@ -60,6 +60,7 @@ int main() {
     Header headers[rows + cols];
     create_header(headers, rows, cols);
     int data;
+    printf("Enter the elements of the sparse matrix: ");
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             scanf("%d", &data);

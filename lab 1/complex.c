@@ -15,8 +15,12 @@ void multiply_complex(Complex *c1, Complex *c2, Complex *result) {
     result->imag = c1->real * c2->imag + c1->imag * c2->real;
 }
 
-void display_complex(Complex c) {
+void display_complex_sum(Complex c) {
     printf("Sum=%.0f+%0.0fi\n", c.real, c.imag);
+}
+
+void display_complex_product(Complex c) {
+    printf("Product=%.0f+%0.0fi\n", c.real, c.imag);
 }
 
 int main() {
@@ -39,11 +43,11 @@ int main() {
         switch (choice) {
             case 1:
                 add_complex(c1, c2, &result);
-                display_complex(result);
+                display_complex_sum(result);
                 break;
             case 2:
                 multiply_complex(&c1, &c2, &result);
-                display_complex(result);
+                display_complex_product(result);
                 break;
             default:
                 printf("Invalid choice.\n");

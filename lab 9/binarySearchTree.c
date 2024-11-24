@@ -81,13 +81,7 @@ int main() {
         scanf("%d", &data);
         root = insertNode(root, data);
     }
-    printf("BST Created:\n");
-    printf("                %d\n", root->data);
-    printf("               /   \\\n");
-    printf("             %d      %d\n", root->left->data, root->right->data);
-    printf("          /  \       \\\n");
-    printf("         %d    %d        %d\n", root->left->left->data, root->left->right->data, root->right->right->data);
-
+    printf("BST Created.\n");
     while (1) {
         printf("\nMAIN MENU\n");
         printf("1. Preorder\n");
